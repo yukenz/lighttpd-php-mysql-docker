@@ -1,0 +1,38 @@
+# Use root/example user/password credentials
+version: '3.1'
+
+services:
+  lighttpd:
+    image: sebp/lighttpd
+    ports:
+      - 80:80
+    volumes:
+      - ./www/:/var/www/localhost/htdocs
+      - ./configweb/:/etc/lighttpd
+    tty: true
+
+  php:
+    build:
+      context: .
+      dockerfile: phpfpm
+    volumes:
+      - ./www:/var/www/localhost/htdocs
+      - ./php:/usr/local/etc/php
+  
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  mysql-data:
