@@ -1,0 +1,9 @@
+[ req ]
+distinguished_name = dn
+prompt = no
+[ dn ]
+CN = localhost
+[ req_ext ]
+subjectAltName = @san
+[ san ]
+DNS = localhost
